@@ -155,7 +155,7 @@ class Discriminator(nn.Module):
             elif gnn_type=='graphsage':
                 self.gnn.append(SAGEConv(emb_dim,emb_dim))
             # self.gnn.append(GATConv(node_fea_dim,emb_dim))
-            elif gnn_type=='DGI':
+            elif gnn_type=='dgi':
                 DeepGraphInfomax(hidden_channels=emb_dim, encoder=Encoder(emb_dim, emb_dim),
                                 summary=lambda z, *args, **kwargs: torch.sigmoid(z.mean(dim=0)),
                                 corruption=corruption)
@@ -164,7 +164,7 @@ class Discriminator(nn.Module):
             self.batch_norm.append(nn.BatchNorm1d(emb_dim))
         self.mlp =nn.Linear(emb_dim,1)
     
-    def forward(self,data,latent_list):
+    def forward(self,data):
         x,edge_index = data.x,data.edge_index
         # edge_index, _ = dropout_adj(edge_index,p=0.9)
         # print(data.edge_index)
